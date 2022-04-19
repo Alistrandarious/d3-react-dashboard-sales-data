@@ -3,6 +3,8 @@ body,
 #root {
   height: 100%;
   width: 100%;
+  padding: 0.5em 0 0 0;
+  background-color: #ffffff;
 }
 
 header,
@@ -38,5 +40,11 @@ footer {
 .btn-primary {
   background-color: #f78874 !important;
   border-color: #f78874 !important;
+  color: black !important;
   margin: 0.5em 0;
+}
+
+.main-component {
+ background-color: rgb(249, 247, 247) ;
+  margin: 0 1em ;
 }
