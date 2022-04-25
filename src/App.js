@@ -1,7 +1,7 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
-import Main from "./components/MainComponent";
+import Main from "./components/pagecomponents/MainComponent";
 
 function App() {
   return (

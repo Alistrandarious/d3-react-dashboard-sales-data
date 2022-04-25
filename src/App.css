@@ -1,10 +1,15 @@
 html,
-body,
-#root {
+body {
   height: 100%;
   width: 100%;
   padding: 0.5em 0 0 0;
   background-color: #ffffff;
+  padding-top: 0;
+
+}
+
+#root {
+  height: 100%;
 }
 
 header,
@@ -12,11 +17,9 @@ footer {
   text-align: center;
 }
 
-.col-xl {
-  text-align: center;
-}
 
-.main-component {
+
+.col-xl {
   text-align: center;
 }
 
@@ -44,7 +47,61 @@ footer {
   margin: 0.5em 0;
 }
 
-.main-component {
- background-color: rgb(249, 247, 247) ;
-  margin: 0 1em ;
+.visual-box {
+  text-align: center;
+  margin: 0 1em;
+  flex-grow: 1;
+  flex-direction: column;
+
+}
+
+.carousel.slide {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.carousel-control-prev, .carousel-control-next {
+  display: none!important;
+}
+
+.slider-title {
+  font-size: 20px;
+}
+
+.slider-footer {
+  font-size: 14px;
+}
+
+.no-space {
+  display: none;
+}
+
+.tooltip {	
+  position: absolute;			
+  text-align: center;			
+  width: auto;					
+  height: auto;					
+  padding: 2px;				
+  font: 12px sans-serif;		
+  background: lightsteelblue;	
+  border: 0px;		
+  border-radius: 8px;			
+  pointer-events: none;
+}
+
+@media only screen and (min-width: 1920px) {
+  .visual-box {
+    margin: auto;
+    width: 1920px;
+  }
+}
+
+  @media only screen and (max-width: 1300px) {
+    .visual-box{
+      display: none;
+    }
+
+    .no-space {
+      display: block
+    }
 }
