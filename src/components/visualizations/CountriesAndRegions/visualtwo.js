@@ -84,7 +84,6 @@ const VisualTwo = () => {
           }
         })
         .on("mouseover", function (event, d) {
-          console.log(d);
           tooltip.transition().duration(200).style("opacity", 0.9);
           tooltip
             .html(

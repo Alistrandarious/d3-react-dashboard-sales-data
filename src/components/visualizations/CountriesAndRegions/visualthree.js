@@ -10,13 +10,22 @@ var tooltip = d3
   .style("opacity", 0)
   .style("padding", "2px");
 
+var array = [];
+function colourDomainGenerator(d) {
+  for (var i = 0; i < d.length; i++) {
+    if (d[i]["REGION"] != undefined) {
+      array.push(d[i]["REGION"]);
+    }
+  }
+}
+
 var colourScale = d3
-  .scaleOrdinal()
-  .domain(["Europe", "Americas", "Oceania", "Asia", "Africa"])
-  .range(["#571845", "#c70009", "#ffc300"]);
+.scaleOrdinal()
+  .domain(array)
+  .range(d3.schemeTableau10);
 
 const VisualThree = () => {
-  const pieChart = useRef();
+  const barchartSmall = useRef();
   const barChart = useRef();
 
   useEffect(
@@ -29,6 +38,8 @@ const VisualThree = () => {
         d.forEach(function (d) {
           d[" TRUE_AMOUNT_GBP "] = +d[" TRUE_AMOUNT_GBP "];
         });
+
+        colourDomainGenerator(d);
 
         //Set Margin and dimensions
         const margin = { top: 50, right: 50, bottom: 50, left: 75 };
@@ -47,7 +58,7 @@ const VisualThree = () => {
 
         //Build the SVG
         const svg = d3
-          .select(pieChart.current)
+          .select(barchartSmall.current)
           .attr("id", "car-viz-three")
           .attr("width", width)
           .attr("height", height)
@@ -64,7 +75,7 @@ const VisualThree = () => {
         const x = d3
           .scaleBand()
           .domain(d3.range(d.length))
-          .range([0, width- margin.right - margin.left])
+          .range([0, width - margin.right - margin.left])
           .padding(0.6);
 
         const y = d3
@@ -106,12 +117,31 @@ const VisualThree = () => {
         svg
           .append("g")
 
-          .call(d3.axisLeft(y).ticks(null, d.format))
+          .call(
+            d3
+              .axisLeft(y)
+              .tickFormat((x) => x / 1000000 + "m")
+              .ticks(null, d.format)
+          )
           .selectAll("text")
           .attr("transform", `translate(0, -5)`)
           .style("text-anchor", "end");
 
-        svg.selectAll("text").style("color", "white").style("font-size", "12px");
+        svg
+          .selectAll("text")
+          .style("color", "white")
+          .style("font-size", "12px");
+
+        svg
+          .append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 0 - margin.left + 20)
+          .attr("x", 0 - height / 2)
+          .attr("dy", "1em")
+          .attr("fill", "white")
+          .style("text-anchor", "middle")
+          .text("Revenue (£)")
+          .style("font-size", "10px");
       });
     },
 
@@ -153,7 +183,7 @@ const VisualThree = () => {
         )
         .call(d3.axisBottom(x))
         .selectAll("text")
-        .attr("transform", "translate(3,-6)rotate(0)")
+        .attr("transform", "translate(5,-5)rotate(0)")
         .style("text-anchor", "start")
         .style("color", "white")
         .style("font-size", "1vw");
@@ -210,6 +240,14 @@ const VisualThree = () => {
 
       //Edit all text
       svg.selectAll("text").style("font-size", "12px").style("color", "white");
+
+      //Axis Titles
+      svg
+        .append("text")
+        .attr("transform", "translate(" + width / 2 + " ," + -10 + ")")
+        .style("text-anchor", "end")
+        .attr("fill", "white")
+        .text("Revenue (£)");
     }),
 
     []
@@ -218,7 +256,7 @@ const VisualThree = () => {
   return (
     <div id="regionData-page3">
       <svg ref={barChart}></svg>
-      <svg ref={pieChart}></svg>
+      <svg ref={barchartSmall}></svg>
     </div>
   );
 };

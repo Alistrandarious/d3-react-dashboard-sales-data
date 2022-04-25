@@ -75,7 +75,7 @@ const BarChart = ({ data, interval, datatype }) => {
       const y = d3
         .scaleLinear()
         .domain([0, max])
-        .range([height * 0.8 - margin.bottom, margin.top]);
+        .range([height * 0.7, 0]);
 
       svg
         .append("g")
@@ -154,7 +154,7 @@ const BarChart = ({ data, interval, datatype }) => {
 
       svg
         .append("g")
-        .attr("transform", "translate(0," + height * 0.75 + ")")
+        .attr("transform", "translate(0," + height * 0.7 + ")")
         .call(
           d3.axisBottom(x).tickFormat((i) => {
             if (interval === "WEEK") {

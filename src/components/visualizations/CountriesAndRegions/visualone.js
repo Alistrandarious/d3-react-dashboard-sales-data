@@ -10,10 +10,20 @@ var tooltip = d3
   .style("opacity", 0)
   .style("padding", "2px");
 
-var colourScale = d3
+  var array = [];
+  function colourDomainGenerator(d) {
+    for (var i = 0; i < d.length; i++) {
+      if (d[i]["REGION"] != undefined) {
+        array.push(d[i]["REGION"]);
+      }
+    }
+  }
+  
+  var colourScale = d3
   .scaleOrdinal()
-  .domain(["Europe", "Americas", "Oceania", "Asia", "Africa"])
-  .range(["#571845", "#c70009", "#ffc300"]);
+    .domain(array)
+    .range(d3.schemeTableau10);
+
 
 const VisualOne = () => {
   const pieChart = useRef();
@@ -24,6 +34,8 @@ const VisualOne = () => {
       d3.csv(regiondata).then((d) => {
         //Removes repeat instances
         d3.select("#car-viz-one g").remove();
+
+        colourDomainGenerator(d)
 
         //Data Formatting
         d.forEach(function (d) {
@@ -56,6 +68,7 @@ const VisualOne = () => {
           .style("right", margin.right)
           .style("margin-bottom", marginbox.bottom + marginbox.top)
           .append("g")
+          .style("z- index", "0")
           .attr(
             "transform",
             "translate(" + margin.left + "," + margin.top + ")"
@@ -64,7 +77,7 @@ const VisualOne = () => {
         const x = d3
           .scaleBand()
           .domain(d3.range(d.length))
-          .range([0, width- margin.right - margin.left])
+          .range([0, width - margin.right - margin.left])
           .padding(0.6);
 
         const y = d3
@@ -115,7 +128,22 @@ const VisualOne = () => {
           .selectAll("text")
           .style("color", "white")
           .style("font-size", "12px");
+
+          svg.append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 0 - margin.left)
+          .attr("x",0 - (height / 2))
+          .attr("dy", "1em")
+          .attr("fill", "white")
+          .style("text-anchor", "middle")
+          .text("Transaction Count")
+          .style("font-size", "10px");
+
+
       });
+
+
+      
     },
 
     d3.csv(regionandcountrydata).then((d) => {
@@ -156,7 +184,7 @@ const VisualOne = () => {
         )
         .call(d3.axisBottom(x))
         .selectAll("text")
-        .attr("transform", "translate(3,-6)rotate(0)")
+        .attr("transform", "translate(5,-5)rotate(0)")
         .style("text-anchor", "start")
         .style("color", "white")
         .style("font-size", "1vw");
@@ -191,6 +219,7 @@ const VisualOne = () => {
         .attr("fill", function (d) {
           return colourScale(d.REGION);
         })
+
         .on("mouseover", function (event, d) {
           tooltip.transition().duration(200).style("opacity", 0.9);
           tooltip
@@ -213,6 +242,14 @@ const VisualOne = () => {
 
       //Edit all text
       svg.selectAll("text").style("font-size", "12px").style("color", "white");
+
+      //Axis Titles
+      svg
+        .append("text")
+        .attr("transform", "translate(" + width / 2 + " ," + -10 + ")")
+        .style("text-anchor", "end")
+        .attr("fill", "white")
+        .text("Transaction Count");
     }),
 
     []

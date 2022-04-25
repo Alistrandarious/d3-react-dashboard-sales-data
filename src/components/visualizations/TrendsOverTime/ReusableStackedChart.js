@@ -14,11 +14,15 @@ const StackedBarChart = ({ data, interval }) => {
 
   useEffect(() => {
     d3.csv(data).then((d) => {
+      //Removes repeat instances
+      // d3.select("#tot-viz-one g").remove();
+      // d3.select("#tot-viz-two g").remove();
       //Set Bounds
       const margin = { top: 50, right: 50, bottom: 50, left: 75 };
       const width = parseInt(d3.select(".visual-box").style("width"));
       const height = parseInt(d3.select(".visual-box").style("height"));
 
+      //Max
       //Max
       const max = d3.max(d, function (d) {
         let sum = 0;
@@ -29,8 +33,6 @@ const StackedBarChart = ({ data, interval }) => {
         }
         return sum;
       });
-
-      console.log(max)
 
       //SVG Creation
       //Build the SVG
@@ -56,15 +58,21 @@ const StackedBarChart = ({ data, interval }) => {
 
       svg
         .append("g")
-        .attr("transform", `translate(0, ${height * 0.75})`)
-        .call(d3.axisBottom(x).tickSizeOuter(0));
+        .attr("transform", `translate(0, ${height * 0.675})`)
+        .call(d3.axisBottom(x).tickSizeOuter(0).tickFormat((i) => {
+          if (interval === "WEEK") {
+            return d[i].WEEK;
+          } else {
+            return d[i].DATE || d[i].WEEKDAY;
+          }
+        }));
 
       // Add Y axis
-      const y = d3
+      const yrs = d3
         .scaleLinear()
         .domain([0, max])
-        .range([height * 0.75, 0]);
-      svg.append("g").call(d3.axisLeft(y));
+        .range([height * 0.675, 0]);
+      svg.append("g").call(d3.axisLeft(yrs));
 
       // color palette = one color per subgroup
       const color = d3
@@ -88,8 +96,8 @@ const StackedBarChart = ({ data, interval }) => {
         .data((d) => d)
         .join("rect")
         .attr("x", (d, i) => x(i))
-        .attr("y", (d) => y(d[1]))
-        .attr("height", (d) => y(d[0]) - y(d[1]))
+        .attr("y", (d) => yrs(d[1]))
+        .attr("height", (d) => yrs(d[0]) - yrs(d[1]))
         .attr("width", x.bandwidth())
         .on("mouseover", function (event, d) {
           tooltip.transition().duration(200).style("opacity", 0.9);
@@ -106,16 +114,16 @@ const StackedBarChart = ({ data, interval }) => {
                 "<br/>" +
                 "<b>Total BRAINTREE: </b>£" +
                 parseInt(d.data.BRAINTREE).toLocaleString() +
-                "<br/>" +
+                " ("+  (parseInt(d.data.BRAINTREE) / total* 100).toFixed(2) + "%)" + "<br/>" +
                 "<b>Total CHECKOUT: </b>£" +
                 parseInt(d.data.CHECKOUT).toLocaleString() +
-                "<br/>" +
+                " ("+  (parseInt(d.data.CHECKOUT) / total* 100).toFixed(2) + "%)" + "<br/>" +
                 "<b>Total KLARNA: </b>£ " +
                 parseInt(d.data.KLARNA).toLocaleString() +
-                "<br/>" +
+                " ("+  (parseInt(d.data.KLARNA) / total* 100).toFixed(2) + "%)" + "<br/>" +
                 "<b>Total STRIPE: </b>£" +
                 parseInt(d.data.STRIPE).toLocaleString() +
-                "<br/>"
+                " ("+  (parseInt(d.data.STRIPE) / total* 100).toFixed(2) + "%)" + "<br/>" 
               );
             })
             .style("left", event.pageX + 5 + "px")
@@ -157,7 +165,9 @@ const StackedBarChart = ({ data, interval }) => {
         })
         .attr("text-anchor", "start")
         .attr("alignment-baseline", "hanging")
-        .attr("fill", "white");
+        .attr("fill", "white")
+
+        svg.selectAll("text").style("color", "white").style("font-size", "12px")
     });
   }, [data]);
 
