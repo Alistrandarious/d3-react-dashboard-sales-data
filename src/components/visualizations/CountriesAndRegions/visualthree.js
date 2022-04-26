@@ -3,12 +3,7 @@ import * as d3 from "d3";
 import regiondata from "./spendperregion.csv";
 import regionandcountrydata from "./spendpercountry.csv";
 
-var tooltip = d3
-  .select("body")
-  .append("div")
-  .attr("class", "tooltip")
-  .style("opacity", 0)
-  .style("padding", "2px");
+var tooltip = d3.select(".tooltip");
 
 var array = [];
 function colourDomainGenerator(d) {

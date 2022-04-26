@@ -1,15 +1,15 @@
 html,
 body {
-  height: 100%;
+  height: 99%;
   width: 100%;
   padding: 0.5em 0 0 0;
-  background-color: #ffffff;
+  background-color: black;
   padding-top: 0;
-
 }
 
 #root {
   height: 100%;
+  background-color: black;
 }
 
 header,
@@ -52,7 +52,12 @@ footer {
   margin: 0 1em;
   flex-grow: 1;
   flex-direction: column;
+}
 
+.text-box {
+margin: auto;
+color: white;
+width: 60%;
 }
 
 .carousel.slide {
