@@ -1,3 +1,5 @@
+//This is the analysis overview. I hardcoded counts based on Python analysis but this can be leveraged with d3 also.
+
 import React from "react";
 
 function AnalysisOverview() {

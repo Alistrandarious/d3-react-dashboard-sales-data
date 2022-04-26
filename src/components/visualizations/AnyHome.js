@@ -1,3 +1,5 @@
+//Just the main page. 
+
 import React from "react";
 
 export default function AnyHome() {

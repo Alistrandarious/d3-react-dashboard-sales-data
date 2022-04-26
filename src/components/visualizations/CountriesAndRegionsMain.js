@@ -1,3 +1,5 @@
+//This is a mishmash of different visuals I thought would be interesting to illustrate the retailers global scale. 
+
 import React from "react";
 import VisualOne from "./CountriesAndRegions/visualone";
 import VisualTwo from "./CountriesAndRegions/visualtwo";

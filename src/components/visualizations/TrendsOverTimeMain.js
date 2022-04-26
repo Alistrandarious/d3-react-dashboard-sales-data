@@ -1,3 +1,5 @@
+//This is my Trends Over Time carousel. I have functions BarChart and StackedBarChart and just pass the data through them to build what I need.
+
 import React from "react";
 import { Carousel } from "react-bootstrap";
 import BarChart from "./TrendsOverTime/ReusableBarChart";
